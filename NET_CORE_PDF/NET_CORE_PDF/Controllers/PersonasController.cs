@@ -10,22 +10,22 @@ using Rotativa.AspNetCore;
 
 namespace NET_CORE_PDF.Controllers
 {
-    public class PersonaController : Controller
+    public class PersonasController : Controller
     {
         private readonly AppDbContext _context;
 
-        public PersonaController(AppDbContext context)
+        public PersonasController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Persona
+        // GET: Personas
         public async Task<IActionResult> Index()
         {
             return View(await _context.Personas.ToListAsync());
         }
 
-        // GET: Persona/Details/5
+        // GET: Personas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,16 +40,29 @@ namespace NET_CORE_PDF.Controllers
                 return NotFound();
             }
 
-             return new ViewAsPdf(persona);
+            return View(persona);
         }
 
-        // GET: Persona/Create
+        //GET: Personas/GenerarCertificado
+        public IActionResult BuscarCertificado()
+        {
+            return View();
+        }
+
+        public IActionResult GenerarCertificado(string TipoDocumento,string Documento)
+        {
+            var persona = _context.Personas.Where(p => p.TipoDocumento == TipoDocumento && p.Documento == Documento).FirstOrDefault<Persona>();
+            return new ViewAsPdf(persona);
+        }
+
+
+        // GET: Personas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Persona/Create
+        // POST: Personas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +78,7 @@ namespace NET_CORE_PDF.Controllers
             return View(persona);
         }
 
-        // GET: Persona/Edit/5
+        // GET: Personas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +94,7 @@ namespace NET_CORE_PDF.Controllers
             return View(persona);
         }
 
-        // POST: Persona/Edit/5
+        // POST: Personas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +129,7 @@ namespace NET_CORE_PDF.Controllers
             return View(persona);
         }
 
-        // GET: Persona/Delete/5
+        // GET: Personas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +147,7 @@ namespace NET_CORE_PDF.Controllers
             return View(persona);
         }
 
-        // POST: Persona/Delete/5
+        // POST: Personas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

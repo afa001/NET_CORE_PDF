@@ -55,7 +55,7 @@ namespace NET_CORE_PDF
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Persona}/{action=Index}/{id?}");
+                    pattern: "{controller=Personas}/{action=BuscarCertificado}/{id?}");
             });
 
             RotativaConfiguration.Setup(env.WebRootPath, "Rotativa"); //configure rotativa pdf
