@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NET_CORE_PDF.Models;
 using Rotativa.AspNetCore;
 
 namespace NET_CORE_PDF
@@ -24,7 +26,9 @@ namespace NET_CORE_PDF
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            //db
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WebApplicationContextConnection")));
+            services.AddMvc(option => option.EnableEndpointRouting = false);  //AddMvc es capaz de retornar archivos json
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +55,7 @@ namespace NET_CORE_PDF
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Persona}/{action=Index}/{id?}");
             });
 
             RotativaConfiguration.Setup(env.WebRootPath, "Rotativa"); //configure rotativa pdf
